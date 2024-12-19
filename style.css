@@ -47,10 +47,6 @@ body {
   background-color: skyblue;
 }
 
-/* #game-container {
-  margin-top: 30px;
-} */
-
 #status-container {
   color: #0f172a;
   font-size: 20px;
@@ -70,4 +66,11 @@ footer {
   font-size: 20px;
   padding: 30px 0;
   z-index: -1;
+}
+
+@media screen and (max-width: 500px) {
+  .matrix-cell {
+    width: 50px;
+    height: 50px;
+  }
 }
