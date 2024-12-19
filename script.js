@@ -1,6 +1,6 @@
 /* 
     بازی حدس ماتریکس اعداد
-    پیدا کردن بزرگترین حاصل صرب ممکن، به صورت افقی و عمودی و قطری
+    پیدا کردن بزرگترین حاصل ضرب ممکن، به صورت افقی و عمودی و قطری
 */
 
 let matrixSize = 4;
@@ -12,6 +12,16 @@ let currentLevel = 1;
 
 // to generate a random number between 1 and 100
 const getRandomNumber = () => Math.floor(Math.random() * 100) + 1;
+
+// Function to convert numbers to Persian
+function toPersianNumber(num) {
+  const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  return num
+    .toString()
+    .split("")
+    .map((digit) => persianNumbers[digit])
+    .join("");
+}
 
 // Function to create the game matrix
 function createMatrix(size) {
@@ -31,7 +41,7 @@ function renderMatrix() {
     const tr = document.createElement("tr");
     row.forEach((cell, j) => {
       const td = document.createElement("td");
-      td.textContent = cell;
+      td.textContent = toPersianNumber(cell); // Convert cell number to Persian
       td.classList.add("matrix-cell");
       td.dataset.row = i;
       td.dataset.col = j;
@@ -73,13 +83,17 @@ function handleCellClick(row, col) {
     if (isValidSelection()) {
       const result = calculateProduct();
       if (isWinningCombination(result)) {
-        alert("😀تبریک شما برنده شدید! رفتی مرحله بعد");
+        alert(`😀تبریک شما برنده شدید! رفتی مرحله بعد`);
         nextLevel();
       } else {
         currentAttempts--;
         updateStatusDisplay(); // Update attempts display immediately
         if (currentAttempts > 0) {
-          alert(`اشتباه حدس زدی، شانس های باقی مانده: ${currentAttempts}`);
+          alert(
+            `اشتباه حدس زدی، شانس های باقی مانده: ${toPersianNumber(
+              currentAttempts
+            )}`
+          );
           resetSelection(); // Reset selection after an incorrect attempt
         } else {
           alert("متاسفانه باختی😭، برگشتی مرحله 1");
@@ -216,7 +230,9 @@ function resetSelection() {
 // Update the status display (level and attempts)
 function updateStatusDisplay() {
   const statusContainer = document.getElementById("status-container");
-  statusContainer.textContent = `سطح: ${currentLevel} (●'◡'●) شانس باقی مانده: ${currentAttempts}`;
+  statusContainer.textContent = `سطح: ${toPersianNumber(
+    currentLevel
+  )} (●'◡'●) شانس باقی مانده: ${toPersianNumber(currentAttempts)}`;
 }
 
 // Initialize the game
