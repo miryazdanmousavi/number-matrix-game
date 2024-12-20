@@ -83,27 +83,71 @@ function handleCellClick(row, col) {
     if (isValidSelection()) {
       const result = calculateProduct();
       if (isWinningCombination(result)) {
-        alert(`😀تبریک شما برنده شدید! رفتی مرحله بعد`);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "تبریک شما برنده شدید! رفتی مرحله بعد",
+        });
         nextLevel();
       } else {
         currentAttempts--;
         updateStatusDisplay(); // Update attempts display immediately
         if (currentAttempts > 0) {
-          alert(
-            `اشتباه حدس زدی، شانس های باقی مانده: ${toPersianNumber(
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `اشتباه حدس زدی شانس های باقی مانده : ${toPersianNumber(
               currentAttempts
-            )}`
-          );
+            )}`,
+          });
+
           resetSelection(); // Reset selection after an incorrect attempt
         } else {
-          alert("متاسفانه باختی😭، برگشتی مرحله 1");
+          Swal.fire({
+            title: "متاسفانه باختی برگشتی مرحله ی اول",
+            icon: "error",
+            draggable: true,
+          });
           restartGame();
         }
       }
     } else {
-      alert(
-        "محدوده ی انتخابی غیر مجاز است. شما فقط می توانید 4 خانه ی کنار هم به صورت افقی و عمودی و قطری انتخاب کنید، همچنین انتخاب مربعی غیر مجاز است"
-      );
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        },
+      });
+      Toast.fire({
+        icon: "warning",
+        title:
+          "محدوده ی انتخابی غیر مجاز است. شما فقط می توانید 4 خانه ی کنار هم به صورت افقی و عمودی و قطری انتخاب کنید، همچنین انتخاب مربعی غیر مجاز است",
+      });
       resetSelection();
     }
   }
@@ -203,7 +247,12 @@ function nextLevel() {
     resetSelection();
     updateStatusDisplay(); // Ensure status display updates on level change
   } else {
-    alert("تبریک شما تمام مراحل بازی را کامل کردید🤩حالا از اول شروع کن");
+    Swal.fire({
+      title:
+        "تبریک! تمام مراحل بازی رو با موفقیت تموم کردی، حالا از اول شروع کن",
+      icon: "success",
+      draggable: true,
+    });
     restartGame();
   }
 }
