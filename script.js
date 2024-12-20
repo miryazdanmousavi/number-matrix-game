@@ -123,11 +123,19 @@ function handleCellClick(row, col) {
 
           resetSelection(); // Reset selection after an incorrect attempt
         } else {
-          Swal.fire({
-            title: "متاسفانه باختی برگشتی مرحله ی اول",
-            icon: "error",
-            draggable: true,
-          });
+          if (matrixSize == 4) {
+            Swal.fire({
+              title: "!متاسفانه باختی همین اول کاری",
+              icon: "error",
+              draggable: true,
+            });
+          } else {
+            Swal.fire({
+              title: "!متاسفانه باختی برگشتی مرحله ی اول",
+              icon: "error",
+              draggable: true,
+            });
+          }
           restartGame();
         }
       }
