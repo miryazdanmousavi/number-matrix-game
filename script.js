@@ -1,8 +1,3 @@
-/* 
-    بازی حدس ماتریکس اعداد
-    پیدا کردن بزرگترین حاصل ضرب ممکن، به صورت افقی و عمودی و قطری
-*/
-
 let matrixSize = 4;
 let maxSize = 10;
 let attempts = 3;
@@ -10,10 +5,8 @@ let currentAttempts = attempts;
 let gameMatrix = [];
 let currentLevel = 1;
 
-// to generate a random number between 1 and 100
 const getRandomNumber = () => Math.floor(Math.random() * 100) + 1;
 
-// Function to convert numbers to Persian
 function toPersianNumber(num) {
   const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return num
@@ -23,14 +16,12 @@ function toPersianNumber(num) {
     .join("");
 }
 
-// Function to create the game matrix
 function createMatrix(size) {
   gameMatrix = Array.from({ length: size }, () =>
     Array.from({ length: size }, getRandomNumber)
   );
 }
 
-// Function to render the game matrix
 function renderMatrix() {
   const container = document.getElementById("game-container");
   container.innerHTML = "";
@@ -54,16 +45,13 @@ function renderMatrix() {
   updateStatusDisplay();
 }
 
-// Track selected cells
 let selectedCells = [];
 
-// Function to handle cell click
 function handleCellClick(row, col) {
   const cellElement = document.querySelector(
     `[data-row='${row}'][data-col='${col}']`
   );
 
-  // Toggle selection state
   const cellIndex = selectedCells.findIndex(
     (cell) => cell.row === row && cell.col === col
   );
@@ -74,11 +62,9 @@ function handleCellClick(row, col) {
     return;
   }
 
-  // Add cell to selected cells and mark it as selected
   selectedCells.push({ row, col });
   cellElement.classList.add("selected");
 
-  // Check if selection is valid and sufficient
   if (selectedCells.length === 4) {
     if (isValidSelection()) {
       const result = calculateProduct();
@@ -101,7 +87,7 @@ function handleCellClick(row, col) {
         nextLevel();
       } else {
         currentAttempts--;
-        updateStatusDisplay(); // Update attempts display immediately
+        updateStatusDisplay();
         if (currentAttempts > 0) {
           const Toast = Swal.mixin({
             toast: true,
@@ -121,7 +107,7 @@ function handleCellClick(row, col) {
             )}`,
           });
 
-          resetSelection(); // Reset selection after an incorrect attempt
+          resetSelection();
         } else {
           if (matrixSize == 4) {
             Swal.fire({
@@ -161,7 +147,6 @@ function handleCellClick(row, col) {
   }
 }
 
-// Function to validate selected cells
 function isValidSelection() {
   const rows = selectedCells.map((cell) => cell.row);
   const cols = selectedCells.map((cell) => cell.col);
@@ -173,13 +158,11 @@ function isValidSelection() {
   return isHorizontal || isVertical || isDiagonal;
 }
 
-// Check if numbers are consecutive
 function isConsecutive(arr) {
   const sorted = [...arr].sort((a, b) => a - b);
   return sorted.slice(1).every((v, i) => v === sorted[i] + 1);
 }
 
-// Check if selection is diagonal
 function isDiagonalSelection(rows, cols) {
   const sortedRows = [...rows].sort((a, b) => a - b);
   const sortedCols = [...cols].sort((a, b) => a - b);
@@ -192,7 +175,6 @@ function isDiagonalSelection(rows, cols) {
   );
 }
 
-// Calculate the product of selected cells
 function calculateProduct() {
   return selectedCells.reduce(
     (product, cell) => product * gameMatrix[cell.row][cell.col],
@@ -200,7 +182,6 @@ function calculateProduct() {
   );
 }
 
-// Check if the selection is the winning combination
 function isWinningCombination(result) {
   let maxProduct = -Infinity;
 
@@ -244,7 +225,6 @@ function isWinningCombination(result) {
   return result === maxProduct;
 }
 
-// Move to the next level
 function nextLevel() {
   if (matrixSize < maxSize) {
     matrixSize++;
@@ -253,7 +233,7 @@ function nextLevel() {
     createMatrix(matrixSize);
     renderMatrix();
     resetSelection();
-    updateStatusDisplay(); // Ensure status display updates on level change
+    updateStatusDisplay();
   } else {
     Swal.fire({
       title:
@@ -265,7 +245,6 @@ function nextLevel() {
   }
 }
 
-// Restart the game
 function restartGame() {
   matrixSize = 4;
   currentAttempts = attempts;
@@ -273,10 +252,9 @@ function restartGame() {
   createMatrix(matrixSize);
   renderMatrix();
   resetSelection();
-  updateStatusDisplay(); // Ensure status display updates on restart
+  updateStatusDisplay();
 }
 
-// Reset the selection
 function resetSelection() {
   selectedCells = [];
   document.querySelectorAll(".matrix-cell.selected").forEach((cell) => {
@@ -284,7 +262,6 @@ function resetSelection() {
   });
 }
 
-// Update the status display (level and attempts)
 function updateStatusDisplay() {
   const statusContainer = document.getElementById("status-container");
   statusContainer.textContent = `سطح: ${toPersianNumber(
@@ -292,7 +269,6 @@ function updateStatusDisplay() {
   )} (●'◡'●) شانس باقی مانده: ${toPersianNumber(currentAttempts)}`;
 }
 
-// Initialize the game
 window.onload = function () {
   const statusContainer = document.createElement("div");
   statusContainer.id = "status-container";
